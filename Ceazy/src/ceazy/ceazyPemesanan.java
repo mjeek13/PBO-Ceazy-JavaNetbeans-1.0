@@ -8,9 +8,13 @@ package ceazy;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
  
 
@@ -19,12 +23,21 @@ import javax.swing.Timer;
  * @author M- Jeek
  */
 public class ceazyPemesanan extends javax.swing.JFrame implements ActionListener {
-
+    
+    Connection conn;
+    Statement stat;
+    ResultSet rs;
+    ResultSet rs2;
+    String sql;
     /**
      * Creates new form ceazyPemesanan
      */
     public ceazyPemesanan() {
         initComponents();
+        ceazyKoneksi DB = new ceazyKoneksi();
+        DB.config();
+        conn = DB.conn;
+        stat = DB.stm;
     }
 
     /**
@@ -36,6 +49,9 @@ public class ceazyPemesanan extends javax.swing.JFrame implements ActionListener
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
@@ -55,11 +71,12 @@ public class ceazyPemesanan extends javax.swing.JFrame implements ActionListener
         jLabel3 = new javax.swing.JLabel();
         inputNamaPemesan = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
-        inputDiskon = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
+        btnVoucher = new javax.swing.JButton();
+        inpVoucher = new javax.swing.JTextField();
+        showDiskon = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -69,6 +86,19 @@ public class ceazyPemesanan extends javax.swing.JFrame implements ActionListener
         totalBelanja = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable2);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -92,6 +122,8 @@ public class ceazyPemesanan extends javax.swing.JFrame implements ActionListener
 
         jLabel8.setFont(new java.awt.Font("Myriad Pro Cond", 1, 18)); // NOI18N
         jLabel8.setText("Drink  :");
+
+        jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -217,12 +249,18 @@ public class ceazyPemesanan extends javax.swing.JFrame implements ActionListener
 
         jPanel7.setBackground(new java.awt.Color(234, 234, 234));
 
-        inputDiskon.setBackground(new java.awt.Color(204, 102, 0));
-        inputDiskon.setFont(new java.awt.Font("Myriad Pro Cond", 1, 18)); // NOI18N
-        inputDiskon.setForeground(new java.awt.Color(255, 255, 255));
-        inputDiskon.setText("Masukkan");
-        inputDiskon.setBorderPainted(false);
-        inputDiskon.addActionListener(this);
+        btnVoucher.setBackground(new java.awt.Color(204, 102, 0));
+        btnVoucher.setFont(new java.awt.Font("Myriad Pro Cond", 1, 18)); // NOI18N
+        btnVoucher.setForeground(new java.awt.Color(255, 255, 255));
+        btnVoucher.setText("Masukkan");
+        btnVoucher.setBorderPainted(false);
+        btnVoucher.addActionListener(this);
+
+        inpVoucher.setFont(new java.awt.Font("Myriad Pro Cond", 0, 14)); // NOI18N
+
+        showDiskon.setEditable(false);
+        showDiskon.setBackground(new java.awt.Color(255, 255, 204));
+        showDiskon.setFont(new java.awt.Font("Myriad Pro Cond", 1, 14)); // NOI18N
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -231,25 +269,29 @@ public class ceazyPemesanan extends javax.swing.JFrame implements ActionListener
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap(53, Short.MAX_VALUE)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(inpVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addComponent(inputDiskon, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnVoucher, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                            .addComponent(showDiskon))))
                 .addGap(60, 60, 60))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(inpVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(inputDiskon)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addComponent(btnVoucher)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(showDiskon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel8.setBackground(new java.awt.Color(234, 234, 234));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -260,17 +302,23 @@ public class ceazyPemesanan extends javax.swing.JFrame implements ActionListener
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane4.setViewportView(jTable3);
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel5.setBackground(new java.awt.Color(204, 153, 0));
@@ -315,13 +363,14 @@ public class ceazyPemesanan extends javax.swing.JFrame implements ActionListener
         jLabel4.setFont(new java.awt.Font("Myriad Pro Cond", 0, 18)); // NOI18N
         jLabel4.setText("Total Belanja :");
 
+        totalBelanja.setEditable(false);
         totalBelanja.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 102, 0), 2));
 
         jLabel5.setFont(new java.awt.Font("Myriad Pro Cond", 1, 18)); // NOI18N
         jLabel5.setText("Nama Meja :");
 
         jComboBox1.setFont(new java.awt.Font("Myriad Pro Cond", 0, 18)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pilih Meja", "Meja 1", "Meja 2", "Meja 3", "Meja 4", "Meja 5", "Meja 6", "Meja 7", "Meja 8" }));
         jComboBox1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 102, 0), 2));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -351,19 +400,18 @@ public class ceazyPemesanan extends javax.swing.JFrame implements ActionListener
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(totalBelanja, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(totalBelanja, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
@@ -382,11 +430,11 @@ public class ceazyPemesanan extends javax.swing.JFrame implements ActionListener
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -395,7 +443,7 @@ public class ceazyPemesanan extends javax.swing.JFrame implements ActionListener
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(totalBelanja, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -417,15 +465,15 @@ public class ceazyPemesanan extends javax.swing.JFrame implements ActionListener
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(152, 152, 152)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 1356, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(140, Short.MAX_VALUE))
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 1368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(168, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(53, 53, 53)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(249, Short.MAX_VALUE))
+                .addContainerGap(444, Short.MAX_VALUE))
         );
 
         pack();
@@ -434,14 +482,14 @@ public class ceazyPemesanan extends javax.swing.JFrame implements ActionListener
     // Code for dispatching events from components to event handlers.
 
     public void actionPerformed(java.awt.event.ActionEvent evt) {
-        if (evt.getSource() == jTextField1) {
-            ceazyPemesanan.this.jTextField1ActionPerformed(evt);
-        }
-        else if (evt.getSource() == inputDiskon) {
-            ceazyPemesanan.this.inputDiskonActionPerformed(evt);
-        }
-        else if (evt.getSource() == btnLoginAdmin) {
+        if (evt.getSource() == btnLoginAdmin) {
             ceazyPemesanan.this.btnLoginAdminActionPerformed(evt);
+        }
+        else if (evt.getSource() == btnVoucher) {
+            ceazyPemesanan.this.btnVoucherActionPerformed(evt);
+        }
+        else if (evt.getSource() == jTextField1) {
+            ceazyPemesanan.this.jTextField1ActionPerformed(evt);
         }
     }// </editor-fold>//GEN-END:initComponents
 
@@ -449,9 +497,24 @@ public class ceazyPemesanan extends javax.swing.JFrame implements ActionListener
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void inputDiskonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputDiskonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inputDiskonActionPerformed
+    private void btnVoucherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoucherActionPerformed
+       String voucher = inpVoucher.getText();
+        try {
+            sql = "SELECT * FROM vouchers WHERE kode_voucher='"+voucher+"'";
+            rs = stat.executeQuery(sql);
+            if(rs.next()){
+                if(voucher.equals(rs.getString("kode_voucher"))){
+                    String jumlahDiskon = rs.getString("diskon");
+                    JOptionPane.showMessageDialog(this, "Diskon Berhasil Ditambahkan \n Anda Mendapatkan potongan sebesar\n Rp."+jumlahDiskon);
+                   showDiskon.setText("Jumlah Diskon : Rp. "+jumlahDiskon);
+                }
+            }else{
+                JOptionPane.showMessageDialog(this,"Maaf voucher yang anda masukkan salah / kadaluarsa.");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }                                            
+    }//GEN-LAST:event_btnVoucherActionPerformed
 
     private void btnLoginAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginAdminActionPerformed
         new ceazyLogin().setVisible(true);
@@ -485,16 +548,16 @@ public class ceazyPemesanan extends javax.swing.JFrame implements ActionListener
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ceazyPemesanan().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new ceazyPemesanan().setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLoginAdmin;
-    private javax.swing.JButton inputDiskon;
+    private javax.swing.JButton btnVoucher;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JTextField inpVoucher;
     private javax.swing.JTextField inputNamaPemesan;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -519,10 +582,14 @@ public class ceazyPemesanan extends javax.swing.JFrame implements ActionListener
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
+    private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField showDiskon;
     private javax.swing.JTextField totalBelanja;
     // End of variables declaration//GEN-END:variables
 }
